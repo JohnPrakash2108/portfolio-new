@@ -37,10 +37,11 @@ html {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color: #0a0a0a;
+    background-color: transparent;
     color: #ffffff;
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
 }
 
 .loading-bar {
@@ -121,6 +122,8 @@ nav {
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.6s ease-out;
+    z-index: 1;
+    background: transparent;
 }
 
 .section.visible {
@@ -169,8 +172,9 @@ nav {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 0;
     background: #000000;
+    pointer-events: none;
 }
 
 h2 {
@@ -460,7 +464,36 @@ footer {
     }
     
     .nav-links {
-        display: none;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        transition: right 0.3s ease;
+        z-index: 999;
+        padding: 2rem;
+        display: flex;
+    }
+    
+    .nav-links.active {
+        right: 0;
+    }
+    
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-links a {
+        display: block;
+        padding: 1rem;
+        font-size: 1.2rem;
     }
     
     .section {

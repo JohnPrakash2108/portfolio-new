@@ -7,10 +7,10 @@
     <base href="./">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script type="module" src="main.js"></script>
 </head>
 <body>
     <div class="loading-bar"></div>
+    <canvas id="starfield" class="webgl"></canvas>
     
     <nav>
         <div class="nav-content">
@@ -38,7 +38,6 @@
                 <p class="subtitle-small">B.Tech CSE Student | Data Science Enthusiast</p>
             </div>
             <!-- <div class="scroll-indicator"></div> -->
-            <canvas class="webgl"></canvas>
         </section>
 
         <section id="about" class="section">
@@ -343,7 +342,18 @@
         <p>&copy; 2024 John Prakash Balireddy. All rights reserved.</p>
     </footer>
 
+    <script type="module" src="stars.js"></script>
     <script>
+        window.addEventListener('load', () => {
+            console.log('Window loaded');
+            const canvas = document.getElementById('starfield');
+            if (canvas) {
+                console.log('Canvas found:', canvas);
+            } else {
+                console.error('Canvas not found!');
+            }
+        });
+
         // Intersection Observer for scroll animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -365,6 +375,7 @@
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
         });
 
         // Close menu when clicking a link
@@ -372,14 +383,16 @@
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('active');
+                document.body.style.overflow = '';
             });
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+            if (!hamburger.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
     </script>
