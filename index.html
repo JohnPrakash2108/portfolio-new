@@ -4,26 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>John Prakash Balireddy - Portfolio</title>
-    <link rel="stylesheet" href="./style.css">
+    <base href="/portfolio-new/">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="importmap">
         {
             "imports": {
                 "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/examples/jsm/controls/OrbitControls": "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js",
-                "three/examples/jsm/loaders/GLTFLoader": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js",
-                "three/examples/jsm/postprocessing/EffectComposer": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js",
-                "three/examples/jsm/postprocessing/RenderPass": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/RenderPass.js",
-                "three/examples/jsm/postprocessing/UnrealBloomPass": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js",
-                "three/examples/jsm/postprocessing/ShaderPass": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/ShaderPass.js",
-                "three/examples/jsm/shaders/FXAAShader": "https://unpkg.com/three@0.160.0/examples/jsm/shaders/FXAAShader.js",
-                "three/examples/jsm/shaders/RGBShiftShader": "https://unpkg.com/three@0.160.0/examples/jsm/shaders/RGBShiftShader.js",
-                "three/examples/jsm/postprocessing/FilmPass": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/FilmPass.js",
-                "three/examples/jsm/geometries/TextGeometry": "https://unpkg.com/three@0.160.0/examples/jsm/geometries/TextGeometry.js",
-                "three/examples/jsm/loaders/FontLoader": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/FontLoader.js"
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                "three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js",
+                "three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js",
+                "three/examples/jsm/postprocessing/EffectComposer.js": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js",
+                "three/examples/jsm/postprocessing/RenderPass.js": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/RenderPass.js",
+                "three/examples/jsm/postprocessing/UnrealBloomPass.js": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js"
             }
         }
     </script>
+    <script type="module" src="main.js"></script>
 </head>
 <body>
     <div class="loading-bar"></div>
@@ -354,7 +351,6 @@
         <p>&copy; 2024 John Prakash Balireddy. All rights reserved.</p>
     </footer>
 
-    <script type="module" src="./main.js"></script>
     <script>
         // Intersection Observer for scroll animations
         const observer = new IntersectionObserver((entries) => {
