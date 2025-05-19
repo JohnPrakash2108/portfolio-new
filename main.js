@@ -158,14 +158,13 @@ scene.add(computerGroup);
 
 // Camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 30, 100);
+camera.position.set(0, 0, 50);
 scene.add(camera);
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    antialias: true,
-    alpha: true
+    antialias: true
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -219,7 +218,7 @@ controls.maxDistance = 200;
 const lights = new THREE.Group();
 
 // Ambient light
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.15);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 lights.add(ambientLight);
 
 // Left side lights
@@ -401,34 +400,113 @@ const resumeParticles = new THREE.Points(resumeParticlesGeometry, resumeParticle
 resumeParticles.position.set(0, 0, -50);
 scene.add(resumeParticles);
 
+// --- VITE-COMPATIBLE STARFIELD WITH CUSTOM SHADER START ---
+// Remove old stars and trails if present
+if (typeof stars !== 'undefined') scene.remove(stars);
+if (typeof starTrails !== 'undefined') scene.remove(starTrails);
+
+// Custom shader for blinking stars
+const starVertexShader = `
+    attribute float blinkRate;
+    attribute float size;
+    varying float vBlinkRate;
+    varying float vSize;
+    
+    void main() {
+        vBlinkRate = blinkRate;
+        vSize = size;
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        gl_PointSize = size * (300.0 / -mvPosition.z);
+        gl_Position = projectionMatrix * mvPosition;
+    }
+`;
+
+const starFragmentShader = `
+    uniform float time;
+    varying float vBlinkRate;
+    varying float vSize;
+    
+    void main() {
+        float blink = 0.5 + 0.5 * sin(time * vBlinkRate);
+        float alpha = 0.8 * blink;
+        gl_FragColor = vec4(1.0, 1.0, 1.0, alpha);
+    }
+`;
+
+// Create layered starfields with custom shader
+const starLayers = [];
+const starConfigs = [
+    { count: 3000, color: 0xffffff, size: 0.18, speed: 0.00008, blinkRate: 1.0 },
+    { count: 1500, color: 0x64ffda, size: 0.22, speed: 0.00012, blinkRate: 1.5 },
+    { count: 800, color: 0xff64da, size: 0.25, speed: 0.00016, blinkRate: 2.0 },
+    { count: 400, color: 0xffffaa, size: 0.3, speed: 0.0002, blinkRate: 2.5 }
+];
+
+starConfigs.forEach(cfg => {
+    const geometry = new THREE.BufferGeometry();
+    const positions = [];
+    const blinkRates = [];
+    const sizes = [];
+    
+    for (let i = 0; i < cfg.count; i++) {
+        positions.push(
+            (Math.random() - 0.5) * 2000,
+            (Math.random() - 0.5) * 2000,
+            (Math.random() - 0.5) * 2000
+        );
+        // Random blink rate for each star
+        blinkRates.push(cfg.blinkRate * (0.5 + Math.random()));
+        // Random size variation for each star
+        sizes.push(cfg.size * (0.5 + Math.random()));
+    }
+    
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('blinkRate', new THREE.Float32BufferAttribute(blinkRates, 1));
+    geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+    
+    const material = new THREE.ShaderMaterial({
+        uniforms: {
+            time: { value: 0 },
+            color: { value: new THREE.Color(cfg.color) }
+        },
+        vertexShader: starVertexShader,
+        fragmentShader: starFragmentShader,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+    });
+    
+    const points = new THREE.Points(geometry, material);
+    points.userData = { speed: cfg.speed };
+    scene.add(points);
+    starLayers.push(points);
+});
+// --- VITE-COMPATIBLE STARFIELD WITH CUSTOM SHADER END ---
+
+// --- ENHANCED ANIMATION LOOP ---
 const animate = () => {
     requestAnimationFrame(animate);
+    const time = performance.now() * 0.001;
 
-    // Rotate stars
-    stars.rotation.y += 0.0001;
-    stars.rotation.x += 0.0001;
+    // Animate star layers
+    starLayers.forEach((layer) => {
+        // Parallax movement
+        layer.rotation.y += layer.userData.speed;
+        layer.rotation.x += layer.userData.speed * 0.5;
+        // Update shader time uniform for blinking
+        layer.material.uniforms.time.value = time;
+    });
 
-    // Rotate star trails
-    starTrails.rotation.y += 0.0002;
-    starTrails.rotation.x += 0.0002;
-
-    // Rotate moon
+    // --- Keep the rest of your animation logic (moon, computer, controls, composer, etc.) ---
     moon.rotation.y += 0.001;
-
-    // Rotate computer
     computerGroup.rotation.y += 0.001;
-
-    // Update star sizes for pulsing effect
-    const time = Date.now() * 0.001;
-    const sizes = starGeometry.attributes.size.array;
-    for (let i = 0; i < sizes.length; i++) {
-        sizes[i] = Math.sin(time + i * 0.1) * 0.1 + 0.2;
-    }
-    starGeometry.attributes.size.needsUpdate = true;
-
-    // Render with post-processing
+    controls.update();
     composer.render();
 };
+// --- END ENHANCED ANIMATION LOOP ---
+
+// Start animation
+animate();
 
 // Handle window resize
 window.addEventListener('resize', () => {
@@ -458,7 +536,4 @@ document.addEventListener('mousemove', (event) => {
 
     // Update RGB shift based on mouse position
     rgbShiftPass.uniforms.amount.value = mouseX * 0.002;
-});
-
-// Start animation
-animate(); 
+}); 
