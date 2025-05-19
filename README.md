@@ -1,71 +1,44 @@
-# Balireddy John Prakash - 3D Portfolio
+# John Prakash Balireddy - Portfolio
 
-A modern, interactive portfolio website featuring Three.js animations and a clean, professional design.
+A modern, interactive portfolio website built with Three.js and modern web technologies.
 
 ## Features
 
-- Interactive 3D background using Three.js
-- Responsive design
-- Smooth scrolling navigation
+- Interactive 3D background with Three.js
+- Modern, responsive design
+- Dynamic animations and effects
+- Resume section with downloadable PDF
+- Project showcase
 - Contact form
-- Modern UI with gradient effects
-- Loading animations
-
-## Prerequisites
-
-- Node.js (v14 or higher)
-- npm (v6 or higher)
-
-## Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd balireddy-portfolio
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm run dev
-```
-
-4. Open your browser and navigate to `http://localhost:5173`
-
-## Building for Production
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-The built files will be in the `dist` directory.
 
 ## Technologies Used
 
-- Three.js for 3D graphics
-- GSAP for animations
-- Vite for build tooling
-- Modern CSS features
-- Vanilla JavaScript
+- HTML5
+- CSS3
+- JavaScript
+- Three.js
+- Font Awesome Icons
 
-## Customization
+## Live Demo
 
-You can customize the portfolio by:
+Visit the live site at: https://johnprakash2108.github.io/portfolio-new/
 
-1. Modifying the content in `index.html`
-2. Adjusting styles in `style.css`
-3. Changing the 3D scene in `main.js`
+## Local Development
 
-## License
+1. Clone the repository:
+```bash
+git clone https://github.com/JohnPrakash2108/portfolio-new.git
+```
 
-MIT License - feel free to use this template for your own portfolio!
+2. Open the project folder:
+```bash
+cd portfolio-new
+```
+
+3. Open `index.html` in your browser or use a local server.
 
 ## Contact
 
-Balireddy John Prakash 
+- Email: balireddyjohnprakash01@gmail.com
+- Phone: +91 (9502419692)
+- Location: Rajahmundry, Andhra Pradesh, India
