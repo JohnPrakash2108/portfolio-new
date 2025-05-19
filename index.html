@@ -7,24 +7,19 @@
     <base href="./">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
-                "three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js",
-                "three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js",
-                "three/examples/jsm/postprocessing/EffectComposer.js": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js",
-                "three/examples/jsm/postprocessing/RenderPass.js": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/RenderPass.js",
-                "three/examples/jsm/postprocessing/UnrealBloomPass.js": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js",
-                "three/examples/jsm/postprocessing/ShaderPass.js": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/ShaderPass.js",
-                "three/examples/jsm/shaders/FXAAShader.js": "https://unpkg.com/three@0.160.0/examples/jsm/shaders/FXAAShader.js",
-                "three/examples/jsm/shaders/RGBShiftShader.js": "https://unpkg.com/three@0.160.0/examples/jsm/shaders/RGBShiftShader.js",
-                "three/examples/jsm/postprocessing/FilmPass.js": "https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/FilmPass.js",
-                "three/examples/jsm/geometries/TextGeometry.js": "https://unpkg.com/three@0.160.0/examples/jsm/geometries/TextGeometry.js",
-                "three/examples/jsm/loaders/FontLoader.js": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/FontLoader.js"
-            }
-        }
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+        import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+        import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+        import { EffectComposer } from 'https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+        import { ShaderPass } from 'https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/ShaderPass.js';
+        import { FXAAShader } from 'https://unpkg.com/three@0.160.0/examples/jsm/shaders/FXAAShader.js';
+        import { RGBShiftShader } from 'https://unpkg.com/three@0.160.0/examples/jsm/shaders/RGBShiftShader.js';
+        import { FilmPass } from 'https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/FilmPass.js';
+        import { TextGeometry } from 'https://unpkg.com/three@0.160.0/examples/jsm/geometries/TextGeometry.js';
+        import { FontLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/FontLoader.js';
     </script>
     <script type="module" src="main.js"></script>
 </head>
@@ -51,7 +46,7 @@
                 <p class="subtitle">Full Stack Developer & Mobile App Developer</p>
                 <p class="subtitle-small">B.Tech CSE Student | Data Science Enthusiast</p>
             </div>
-            <!-- <div class="scroll-indicator"></div> -->
+            <div class="scroll-indicator"></div>
             <canvas class="webgl"></canvas>
         </section>
 
