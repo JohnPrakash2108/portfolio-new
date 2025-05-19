@@ -171,7 +171,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 2.0;
 
@@ -402,166 +402,32 @@ resumeParticles.position.set(0, 0, -50);
 scene.add(resumeParticles);
 
 const animate = () => {
-    const elapsedTime = clock.getElapsedTime();
-    const deltaTime = elapsedTime - previousTime;
-    previousTime = elapsedTime;
+    requestAnimationFrame(animate);
 
-    // Animate text writing effect
-    if (window.textObjects) {
-        window.textObjects.progress = Math.min(1, window.textObjects.progress + 0.005);
-        
-        // Fade in text
-        window.textObjects.mesh.material.opacity = window.textObjects.progress;
-        window.textObjects.glow.material.opacity = window.textObjects.progress * 0.2;
-
-        // Add writing animation effect
-        const vertices = window.textObjects.mesh.geometry.attributes.position.array;
-        const originalVertices = window.textObjects.mesh.geometry.attributes.position.array.slice();
-        
-        for (let i = 0; i < vertices.length; i += 3) {
-            const progress = Math.min(1, window.textObjects.progress * 3 - (i / vertices.length));
-            if (progress > 0) {
-                vertices[i] = originalVertices[i] * progress;
-                vertices[i + 1] = originalVertices[i + 1] * progress;
-                vertices[i + 2] = originalVertices[i + 2] * progress;
-            }
-        }
-        window.textObjects.mesh.geometry.attributes.position.needsUpdate = true;
-
-        // Add floating animation
-        window.textObjects.mesh.position.y = 30 + Math.sin(elapsedTime * 0.5) * 2;
-        window.textObjects.glow.position.y = window.textObjects.mesh.position.y;
-    }
-
-    // Enhanced star animations
+    // Rotate stars
     stars.rotation.y += 0.0001;
     stars.rotation.x += 0.0001;
-    
-    // Animate star sizes
-    const sizes = stars.geometry.attributes.size.array;
-    for (let i = 0; i < sizes.length; i++) {
-        sizes[i] = Math.sin(elapsedTime + i) * 0.15 + 0.15;
-    }
-    stars.geometry.attributes.size.needsUpdate = true;
 
-    // Animate star trails
+    // Rotate star trails
     starTrails.rotation.y += 0.0002;
     starTrails.rotation.x += 0.0002;
-    starTrails.material.opacity = 0.3 + Math.sin(elapsedTime) * 0.2;
 
-    // Animate shooting stars
-    shootingStars.forEach((star, index) => {
-        if (!star.visible && Math.random() < 0.001) {
-            // Start new shooting star
-            star.visible = true;
-            star.position.set(
-                (Math.random() - 0.5) * 1000,
-                (Math.random() - 0.5) * 1000,
-                (Math.random() - 0.5) * 1000
-            );
-            star.userData = {
-                velocity: new THREE.Vector3(
-                    (Math.random() - 0.5) * 2,
-                    (Math.random() - 0.5) * 2,
-                    (Math.random() - 0.5) * 2
-                ),
-                life: 1.0
-            };
-        }
+    // Rotate moon
+    moon.rotation.y += 0.001;
 
-        if (star.visible) {
-            // Update shooting star position
-            star.position.add(star.userData.velocity);
-            star.userData.life -= 0.01;
+    // Rotate computer
+    computerGroup.rotation.y += 0.001;
 
-            // Update trail
-            const positions = star.geometry.attributes.position.array;
-            for (let i = positions.length - 3; i > 0; i -= 3) {
-                positions[i] = positions[i - 3];
-                positions[i + 1] = positions[i - 2];
-                positions[i + 2] = positions[i - 1];
-            }
-            positions[0] = star.position.x;
-            positions[1] = star.position.y;
-            positions[2] = star.position.z;
-            star.geometry.attributes.position.needsUpdate = true;
-
-            // Fade out and reset
-            if (star.userData.life <= 0) {
-                star.visible = false;
-            }
-        }
-    });
-
-    // Enhanced moon rotation and movement
-    moon.rotation.y += 0.002;
-    moon.rotation.x += 0.001;
-    moon.position.y = Math.sin(elapsedTime * 0.2) * 5;
-    moon.position.x = Math.cos(elapsedTime * 0.1) * 10;
-
-    // Animate particles
-    particles.rotation.y += 0.0005;
-    particles.rotation.x += 0.0005;
-
-    // Enhanced floating animation for computer
-    computerGroup.position.y = Math.sin(elapsedTime * 0.001) * 2;
-    computerGroup.rotation.z = Math.sin(elapsedTime * 0.0005) * 0.1;
-
-    // Animate screen glow
-    screenGlow.material.opacity = 0.2 + Math.sin(elapsedTime * 0.002) * 0.1;
-
-    // Animate lights with reduced intensity variations
-    leftPointLight.position.x = -50 + Math.sin(elapsedTime * 0.5) * 10;
-    leftPointLight.position.y = 30 + Math.cos(elapsedTime * 0.3) * 5;
-    leftPointLight.intensity = 1.2 + Math.sin(elapsedTime * 2) * 0.3;
-
-    rightPointLight.position.x = 50 + Math.sin(elapsedTime * 0.5) * 10;
-    rightPointLight.position.y = 30 + Math.cos(elapsedTime * 0.3) * 5;
-    rightPointLight.intensity = 1.2 + Math.sin(elapsedTime * 2 + Math.PI) * 0.3;
-
-    leftSpotLight.position.x = -40 + Math.sin(elapsedTime * 0.3) * 5;
-    leftSpotLight.position.y = 40 + Math.cos(elapsedTime * 0.2) * 3;
-    leftSpotLight.intensity = 0.8 + Math.sin(elapsedTime * 1.5) * 0.2;
-
-    rightSpotLight.position.x = 40 + Math.sin(elapsedTime * 0.3) * 5;
-    rightSpotLight.position.y = 40 + Math.cos(elapsedTime * 0.2) * 3;
-    rightSpotLight.intensity = 0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.2;
-
-    centerLight.intensity = 0.6 + Math.sin(elapsedTime) * 0.1;
-
-    // Update post-processing effects
-    rgbShiftPass.uniforms.amount.value = Math.sin(elapsedTime * 0.5) * 0.001;
-    filmPass.uniforms.grayscale.value = Math.sin(elapsedTime * 0.2) > 0;
-    bloomPass.strength = 1.5 + Math.sin(elapsedTime * 0.5) * 0.5;
-
-    // Update controls
-    controls.update();
-
-    // Animate resume particles
-    const resumeSection = document.querySelector('#resume');
-    if (resumeSection) {
-        const rect = resumeSection.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-            resumeParticles.visible = true;
-            resumeParticles.rotation.y += 0.0005;
-            resumeParticles.rotation.x += 0.0005;
-            
-            // Pulse particles
-            const positions = resumeParticles.geometry.attributes.position.array;
-            for (let i = 0; i < positions.length; i += 3) {
-                positions[i + 1] += Math.sin(elapsedTime + i) * 0.01;
-            }
-            resumeParticles.geometry.attributes.position.needsUpdate = true;
-        } else {
-            resumeParticles.visible = false;
-        }
+    // Update star sizes for pulsing effect
+    const time = Date.now() * 0.001;
+    const sizes = starGeometry.attributes.size.array;
+    for (let i = 0; i < sizes.length; i++) {
+        sizes[i] = Math.sin(time + i * 0.1) * 0.1 + 0.2;
     }
+    starGeometry.attributes.size.needsUpdate = true;
 
     // Render with post-processing
     composer.render();
-
-    // Call animate again on the next frame
-    window.requestAnimationFrame(animate);
 };
 
 // Handle window resize
@@ -572,8 +438,10 @@ window.addEventListener('resize', () => {
 
     // Update renderer
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Update composer
     composer.setSize(window.innerWidth, window.innerHeight);
-    fxaaPass.uniforms['resolution'].value.set(1 / (window.innerWidth * renderer.getPixelRatio()), 1 / (window.innerHeight * renderer.getPixelRatio()));
 });
 
 // Mouse move effect
