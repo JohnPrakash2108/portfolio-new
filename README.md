@@ -42,3 +42,6 @@ cd portfolio-new
 - Email: balireddyjohnprakash01@gmail.com
 - Phone: +91 (9502419692)
 - Location: Rajahmundry, Andhra Pradesh, India
+
+---
+*Last updated: March 2024*
